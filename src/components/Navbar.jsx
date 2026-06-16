@@ -1,8 +1,16 @@
+"use client";
 import { Link } from '@heroui/react';
 import Image from 'next/image'; 
 import React from 'react';
 
 const Navbar = () => {
+    // 1 step
+//     const userData= authClient.useSession()
+//   const user = userData.data?.user;
+
+//   const handleLogOut = async() =>{
+//     await authClient.signOut();
+//   }
     return (
         <nav className='flex justify-between items-center bg-white p-5 shadow-sm'>
            

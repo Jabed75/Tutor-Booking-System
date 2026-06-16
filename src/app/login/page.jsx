@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from "@/lib/auth-client";
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const router = useRouter()
   const onSubmit =async(e) =>{
     e.preventDefault();
@@ -12,11 +12,10 @@ const SignUpPage = () => {
     const formData = new FormData (e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
-    const { data, error} = await authClient.signUp.email({
+    const { data, error} = await authClient.signIn.email({
     email:user.email,
     password:user.password,
-    name:user.name,
-    image:user.image
+    
 
     });
      if(data){
@@ -30,20 +29,10 @@ const SignUpPage = () => {
   };
   return (
      <Card className="border mx-auto w-125 py-10 mt-5">
-      <h1 className="text-center text-2xl font-bold">Register</h1>
+      <h1 className="text-center text-2xl font-bold">Login-Page</h1>
 
       <Form className="flex w-96 mx-auto flex-col gap-4" onSubmit={onSubmit}>
-        <TextField isRequired name="name" type="text">
-          <Label>Name</Label>
-          <Input placeholder="Enter your name" />
-          <FieldError />
-        </TextField>
-
-        <TextField isRequired name="image" type="text">
-          <Label>Image URL</Label>
-          <Input placeholder="Image URL" />
-          <FieldError />
-        </TextField>
+        
 
         <TextField
           isRequired
@@ -92,7 +81,7 @@ const SignUpPage = () => {
         <div className="flex justify-center gap-2 w-full">
           <Button className={'rounded-none w-full'} type="submit">
             
-            Create Account
+            Login
           </Button>
          
         </div>
@@ -104,4 +93,4 @@ const SignUpPage = () => {
 }
 
 
-export default SignUpPage;
+export default LoginPage;
