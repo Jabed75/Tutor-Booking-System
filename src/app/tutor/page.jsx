@@ -97,7 +97,7 @@ const Tutorpage = async () => {
                                             <span className="text-xs font-bold text-gray-500 ml-1">/hr</span>
                                         </div>
                                     </div>
-                                   {/* মেইন পেজের (Tutorpage) কার্ডের ভেতরের বাটন অংশ */}
+                                  
 <Link href={`/tutor/${tutor._id}`} prefetch={false}>
     <Button 
         className="px-5 py-3 bg-gray-950 hover:bg-indigo-600 text-white text-sm font-bold rounded-xl shadow-sm transition-all duration-300"
