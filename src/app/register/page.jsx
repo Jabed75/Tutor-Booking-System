@@ -6,30 +6,30 @@ import { authClient } from "@/lib/auth-client";
 
 const SignUpPage = () => {
   const router = useRouter()
-  const onSubmit =async(e) =>{
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData (e.currentTarget);
+    const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-
-    const { data, error} = await authClient.signUp.email({
-    email:user.email,
-    password:user.password,
-    name:user.name,
-    image:user.image
+    console.log(user);
+    const { data, error } = await authClient.signUp.email({
+      email: user.email,
+      password: user.password,
+      name: user.name,
+      image: user.image
 
     });
-     if(data){
+    if (data) {
       router.push("/");
-     }
+    }
 
-     if(error){
-// toast
-    alert("error")
-     }
+    if (error) {
+      // toast
+      alert("error")
+    }
   };
   return (
-     <Card className="border mx-auto w-125 py-10 mt-5">
+    <Card className="border mx-auto w-125 py-10 mt-5">
       <h1 className="text-center text-2xl font-bold">Register</h1>
 
       <Form className="flex w-96 mx-auto flex-col gap-4" onSubmit={onSubmit}>
@@ -91,14 +91,14 @@ const SignUpPage = () => {
 
         <div className="flex justify-center gap-2 w-full">
           <Button className={'rounded-none w-full'} type="submit">
-            
+
             Create Account
           </Button>
-         
+
         </div>
       </Form>
-      
-     
+
+
     </Card>
   );
 }

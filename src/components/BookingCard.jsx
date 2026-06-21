@@ -2,48 +2,56 @@
 import { authClient } from "@/lib/auth-client";
 import { DateField, Label } from "@heroui/react";
 import { Card, Button } from '@heroui/react';
-import React from 'react';
+import React, { useState } from 'react';
+import toast from "react-hot-toast";
 
 const BookingCard = ({ tutor }) => {
     const { data: session } = authClient.useSession();
     const user = session?.user;
-    const [departureDate, setDepartureDate] =useState
-    (null);
 
-     const {price, _id, tutor,tutorName, imageUrl} = tutor?.price;
+    console.log(user);
+    const [departureDate, setDepartureDate] = useState(null);
 
-    const hangleBooking = async() =>{
-        const bookingData ={
-            userId: user.id,
-            userImage: user.image,
-            userName: user.name,
+    const { price, _id, tutorName, imageUrl, subject, location } = tutor || {};
+    const hangleBooking = async () => {
+        // if (!user) {
+        //     alert("Please log in to booking a tutor.");
+        //     return;
+        // }
+
+        const bookingData = {
+            userId: user?.id,
+            userImage: user?.image,
+            userName: user?.name,
             tutorId: _id,
             tutorName,
             price,
             imageUrl,
-            // location,
-            // day,
-            // exprience,
+            location,
+            subject,
+            departureDate: departureDate ? new Date(departureDate) : null
+        };
 
-            departureDate: new Date(departureDate)
+        try {
+            const res = await fetch('http://localhost:5000/booking', {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(bookingData)
+            });
+            const data = await res.json();
+            console.log(data);
+        } catch (error) {
+            console.error("Booking failed:", error);
         }
-        const res = await fetch('http://localhost:5000/booking',{
-            method: "POST",
-            headers:{
-                'content-type': 'applicaton/json'
-            },
-            body: JSON.stringify(bookingData)
-        })
-        const data= await res.json();
-        console.log(data)
-    }
- 
-    
+        toast.success("You booked successfully")
+    };
 
     return (
         <Card className='rounded-none border mt-5 p-5 shadow-sm'>
             <p className='text-sm text-gray-500'>Starting From</p>
-            
+
             <h1 className='text-3xl font-bold'>${price || 0}</h1>
             <p className='text-sm text-gray-500 mb-4'>per Student</p>
 

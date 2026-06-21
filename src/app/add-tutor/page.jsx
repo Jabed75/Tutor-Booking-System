@@ -11,7 +11,7 @@ const AddTutor = () => {
     const tutor = Object.fromEntries(formData.entries());
     
 
-    console.log(tutor); 
+    // console.log(tutor); 
 
     const res = await fetch('http://localhost:5000/tutor', { 
       method: 'POST',
@@ -22,7 +22,7 @@ const AddTutor = () => {
     });
 
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
   }; 
 
   return (
