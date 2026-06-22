@@ -26,7 +26,7 @@ const handleSignout = async()=>{
                     <Link href='/tutor'>Tutor</Link>
                 </li>
                 <li>
-                    <Link href='/my-tutor-booking'>My Tutor Booking</Link>
+                    <Link href='/my-bookings'>My Bookings</Link>
                 </li>
                 <li>
                     <Link href='/add-tutor'>Add Tutor</Link>
