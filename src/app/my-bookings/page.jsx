@@ -3,6 +3,7 @@ import { TrashBin } from "@gravity-ui/icons";
 import { Button } from "@heroui/react";
 import { headers } from "next/headers";
 import Image from "next/image";
+import { BookingCancelAlert } from "../../components/BookingCancelAlert";
 
 const MyBookingPage = async () => {
   const session = await auth.api.getSession({
@@ -47,7 +48,9 @@ const MyBookingPage = async () => {
               <p className="text-3xl font-bold text-cyan-500">
                 ${booking.price}
               </p>
-              <Button className={'rounded-none border-red-500 text-red-500'} variant="outline"><TrashBin/> Cancel</Button>
+              
+              <BookingCancelAlert bookingId={booking._id}/>
+              
  
               
             </div>
