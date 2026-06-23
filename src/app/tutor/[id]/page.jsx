@@ -2,11 +2,19 @@ import React from 'react';
 import { Button } from '@heroui/react';
 import Link from 'next/link';
 import BookingCard from '@/components/BookingCard';
+import { headers } from 'next/headers';
+
+export const dynamic = "force-dynamic";
 
 const TutorDetailsPage = async ({ params }) => {
     const { id } = await params;
 
     const res = await fetch(`http://localhost:5000/tutor/${id}`, { cache: 'no-store' });
+    // 2step proxy
+    headers: {
+        authorization: "logged in"
+    }
+    
     const tutor = await res.json(); 
 
    

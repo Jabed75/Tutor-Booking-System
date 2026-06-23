@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import { BookingCancelAlert } from "../../components/BookingCancelAlert";
 
+export const dynamic = "force-dynamic";
 const MyBookingPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),

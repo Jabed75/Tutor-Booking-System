@@ -29,7 +29,7 @@ const BookingCard = ({ tutor }) => {
             imageUrl,
             location,
             subject,
-            departureDate: departureDate ? new Date(departureDate) : null
+            departureDate: departureDate ? new Date(departureDate.year, departureDate.month - 1, departureDate.day) : null
         };
 
         try {
