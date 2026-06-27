@@ -1,227 +1,222 @@
-// "use client";
+"use client";
 
-// import { Envelope } from "@gravity-ui/icons";
-// import {
-//   Button,
-//   FieldError,
-//   Input,
-//   Label,
-//   ListBox,
-//   Modal,
-//   Surface,
-//   TextArea,
-//   TextField,
-//   Select,
-// } from "@heroui/react";
-// import { BiEdit } from "react-icons/bi";
+import { Envelope } from "@gravity-ui/icons";
+import {
+  Button,
+  FieldError,
+  Input,
+  Label,
+  ListBox,
+  Modal,
+  Surface,
+  TextArea,
+  TextField,
+  Select,
+} from "@heroui/react";
+import { BiEdit } from "react-icons/bi";
 
-// export function EditModal({ destination }) {
-//   const {
-//     _id,
-//     imageUrl,
-//     price,
-//     destinationName,
-//     duration,
-//     country,
-//     description,
-//     category,
-//     departureDate,
-//   } = destination;
+export function EditModal({ tutor }) {
+  const {
+    _id,
+    tutorName,
+    location,
+    subject,
+    price,
+    totalSlot,
+    duration,
+    day,
+    institution,
+    experience,
+    teachingMode,
+    departureDate,
+    email,
+    imageUrl,
+  } = tutor || {};
+console.log(_id)
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.currentTarget);
+    const updatedData = Object.fromEntries(formData.entries());
+    console.log(updatedData)
+     const res = await fetch(`http://localhost:5000/tutor/${_id}`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatedData), 
 
-//   const onSubmit = async (e) => {
-//     e.preventDefault();
-//     const formData = new FormData(e.currentTarget);
-//     const destination = Object.fromEntries(formData.entries());
+      });
 
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/destination/${_id}`, {
-//       method: "PATCH",
-//       headers: {
-//         "content-type": "application/json",
-//       },
-//       body: JSON.stringify(destination),
-//       credentials: "include"
-//     });
+      const data = await res.json();
+      console.log(data);
+  };
 
-//     const data = await res.json();
-//     console.log(data);
-//   };
-//   return (
-//     <Modal>
+  return (
+    <Modal>
+      <div className='flex justify-end'>
+        <Button variant='outline' className={'rounded-none '}><BiEdit /></Button>
+      </div>
 
-//         <Button variant="outline" className={"rounded-none"}>
-//           <BiEdit /> Edit
-//         </Button>
+      <Modal.Backdrop>
+       
+        <Modal.Container placement="auto" scrollBehavior="inside">
+          <Modal.Dialog className="sm:max-w-xl max-h-[90vh]">
+            <Modal.CloseTrigger />
+            <Modal.Header>
+              <Modal.Heading>Edit Tutor</Modal.Heading>
+            </Modal.Header>
 
-//       <Modal.Backdrop>
-//         <Modal.Container placement="auto">
-//           <Modal.Dialog className="sm:max-w-xl">
-//             <Modal.CloseTrigger />
-//             <Modal.Header>
-//               <Modal.Heading>Edit Destination</Modal.Heading>
-//             </Modal.Header>
-//             <Modal.Body className="p-6">
-//               <Surface variant="default">
-//                 <form onSubmit={onSubmit} className="p-10 space-y-8">
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//                     {/* Destination Name */}
-//                     <div className="md:col-span-2">
-//                       <TextField
-//                         defaultValue={destinationName}
-//                         name="destinationName"
-//                         isRequired
-//                       >
-//                         <Label>Destination Name</Label>
-//                         <Input
-//                           placeholder="Bali Paradise"
-//                           className="rounded-2xl"
-//                         />
-//                         <FieldError />
-//                       </TextField>
-//                     </div>
-
-//                     {/* Country */}
-//                     <TextField defaultValue={country} name="country" isRequired>
-//                       <Label>Country</Label>
-//                       <Input placeholder="Indonesia" className="rounded-2xl" />
-//                       <FieldError />
-//                     </TextField>
-
-//                     {/* Category - Updated Select Component */}
-//                     <div>
-//                       <Select
-//                         defaultValue={category}
-//                         name="category"
-//                         isRequired
-//                         className="w-full"
-//                         placeholder="Select category"
-//                       >
-//                         <Label>Category</Label>
-//                         <Select.Trigger className="rounded-2xl">
-//                           <Select.Value />
-//                           <Select.Indicator />
-//                         </Select.Trigger>
-//                         <Select.Popover>
-//                           <ListBox>
-//                             <ListBox.Item id="Beach" textValue="Beach">
-//                               Beach
-//                               <ListBox.ItemIndicator />
-//                             </ListBox.Item>
-//                             <ListBox.Item id="Mountain" textValue="Mountain">
-//                               Mountain
-//                               <ListBox.ItemIndicator />
-//                             </ListBox.Item>
-//                             <ListBox.Item id="City" textValue="City">
-//                               City
-//                               <ListBox.ItemIndicator />
-//                             </ListBox.Item>
-//                             <ListBox.Item id="Adventure" textValue="Adventure">
-//                               Adventure
-//                               <ListBox.ItemIndicator />
-//                             </ListBox.Item>
-//                             <ListBox.Item id="Cultural" textValue="Cultural">
-//                               Cultural
-//                               <ListBox.ItemIndicator />
-//                             </ListBox.Item>
-//                             <ListBox.Item id="Luxury" textValue="Luxury">
-//                               Luxury
-//                               <ListBox.ItemIndicator />
-//                             </ListBox.Item>
-//                           </ListBox>
-//                         </Select.Popover>
-//                       </Select>
-//                     </div>
-
-//                     {/* Price */}
-//                     <TextField
-//                       defaultValue={price}
-//                       name="price"
-//                       type="number"
-//                       isRequired
-//                     >
-//                       <Label>Price (USD)</Label>
-//                       <Input
-//                         type="number"
-//                         placeholder="1299"
-//                         className="rounded-2xl"
-//                       />
-//                       <FieldError />
-//                     </TextField>
-
-//                     {/* Duration */}
-//                     <TextField
-//                       defaultValue={duration}
-//                       name="duration"
-//                       isRequired
-//                     >
-//                       <Label>Duration</Label>
-//                       <Input
-//                         placeholder="7 Days / 6 Nights"
-//                         className="rounded-2xl"
-//                       />
-//                       <FieldError />
-//                     </TextField>
-
-//                     {/* Departure Date */}
-//                     <div className="md:col-span-2">
-//                       <TextField
-//                         defaultValue={departureDate}
-//                         name="departureDate"
-//                         type="date"
-//                         isRequired
-//                       >
-//                         <Label>Departure Date</Label>
-//                         <Input type="date" className="rounded-2xl" />
-//                         <FieldError />
-//                       </TextField>
-//                     </div>
-
-//                     {/* Image URL - Removed preview */}
-//                     <div className="md:col-span-2">
-//                       <TextField
-//                         defaultValue={imageUrl}
-//                         name="imageUrl"
-//                         isRequired
-//                       >
-//                         <Label>Image URL</Label>
-//                         <Input
-//                           type="url"
-//                           placeholder="https://example.com/bali-paradise.jpg"
-//                           className="rounded-2xl"
-//                         />
-//                         <FieldError />
-//                       </TextField>
-//                     </div>
-
-//                     {/* Description */}
-//                     <div className="md:col-span-2">
-//                       <TextField
-//                         defaultValue={description}
-//                         name="description"
-//                         isRequired
-//                       >
-//                         <Label>Description</Label>
-//                         <TextArea
-//                           placeholder="Describe the travel experience..."
-//                           className="rounded-3xl"
-//                         />
-//                         <FieldError />
-//                       </TextField>
-//                     </div>
-//                   </div>
-
-//                   {/* Buttons */}
-
-//                   <Modal.Footer>
-//                     <Button type="submit" slot="close">
-//                       Save
-//                     </Button>
-//                   </Modal.Footer>
-//                 </form>
-//               </Surface>
-//             </Modal.Body>
-//           </Modal.Dialog>
-//         </Modal.Container>
-//       </Modal.Backdrop>
-//     </Modal>
-//   );
-// }
+           
+            <Modal.Body className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <Surface variant="default">
+               <form onSubmit={onSubmit} className="p-10 space-y-8 w-3xl">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                           
+                           <div className="md:col-span-2">
+                             <TextField defaultValue={tutorName} name="tutorName" >
+                               <Label>Tutor Name</Label>
+                               <Input placeholder="name" className="rounded-2xl" />
+                               <FieldError />
+                             </TextField>
+                           </div>
+               
+                           {/* Location */}
+                           <TextField defaultValue={location} name="location">
+                             <Label>Location</Label>
+                             <Input placeholder="Area/city" className="rounded-2xl" />
+                             <FieldError />
+                           </TextField>
+               
+                           
+                           <div>
+                             <Select defaultValue={subject}
+                               name="subject"
+                               
+                               className="w-full"
+                               placeholder="Select subject"
+                             >
+                               <Label>Subject</Label>
+                               <Select.Trigger className="rounded-2xl">
+                                 <Select.Value />
+                                 <Select.Indicator />
+                               </Select.Trigger>
+                               <Select.Popover>
+                                 <ListBox>
+                                   <ListBox.Item id="Mathematics" textValue="Mathematics">
+                                     Mathematics
+                                     <ListBox.ItemIndicator />
+                                   </ListBox.Item>
+                                   <ListBox.Item id="Physics" textValue="Physics">
+                                     Physics
+                                     <ListBox.ItemIndicator />
+                                   </ListBox.Item>
+                                   <ListBox.Item id="English" textValue="English">
+                                     English
+                                     <ListBox.ItemIndicator />
+                                   </ListBox.Item>
+                                   <ListBox.Item id="Chemistry" textValue="Chemistry">
+                                     Chemistry
+                                     <ListBox.ItemIndicator />
+                                   </ListBox.Item>
+                                   <ListBox.Item id="Biology" textValue="Biology">
+                                     Biology
+                                     <ListBox.ItemIndicator />
+                                   </ListBox.Item>
+                                   <ListBox.Item id="All-Subject" textValue="All-Subject">
+                                     All-Subject
+                                     <ListBox.ItemIndicator />
+                                   </ListBox.Item>
+                                 </ListBox>
+                               </Select.Popover>
+                             </Select>
+                           </div>
+               
+                           <TextField defaultValue={price} name="price" type="number">
+                             <Label>Hourly fee</Label>
+                             <Input type="number" placeholder="2000" className="rounded-2xl" />
+                             <FieldError />
+               
+                           </TextField>
+                           <TextField defaultValue={totalSlot}>
+                        <Label>Total Slot</Label>
+ 
+                        <Input name="totalSlot" type="number" placeholder="5" className="rounded-2xl" />
+                       <FieldError />
+                         </TextField>
+               
+                          <TextField defaultValue={duration} name="duration">
+                                          <Label>AvailableTimeSlot</Label>
+                                          <Input
+                                            placeholder="12am-12pm"
+                                            className="rounded-2xl"
+                                          />
+                                          <FieldError />
+                                        </TextField>
+                          
+                          <TextField defaultValue={day} name="day">
+                                          <Label>AvailableDay</Label>
+                                          <Input
+                                            placeholder="Sun-Thu"
+                                            className="rounded-2xl"
+                                          />
+                                          <FieldError />
+                                        </TextField>
+                          
+               
+                           <TextField defaultValue={institution} name="institution">
+                             <Label>Institution</Label>
+                             <Input placeholder="University/year" className="rounded-2xl" />
+                             <FieldError />
+                           </TextField>
+               
+                           <TextField defaultValue={experience} name="experience">
+                             <Label>Experience</Label>
+                             <Input placeholder="year" className="rounded-2xl" />
+                             <FieldError />
+                           </TextField>
+                           
+                           <TextField defaultValue={teachingMode} name="teachingMode">
+                             <Label>TeachingMode</Label>
+                             <Input placeholder="online/offline" className="rounded-2xl" />
+                             <FieldError />
+                           </TextField>
+               
+                           <div className="md:col-span-2">
+                             <TextField defaultValue={departureDate} name="departureDate" type="date">
+                               <Label>SessionStartDate</Label>
+                               <Input type="date" className="rounded-2xl" />
+                               <FieldError />
+                             </TextField>
+                           </div>
+                           <div className="md:col-span-2">
+                             <TextField defaultValue={email} name="email" type="text">
+                               <Label>Email</Label>
+                              <Input type="text" placeholder="xxx@gmail.com" className="rounded-2xl" />
+                               <FieldError />
+                             </TextField>
+                           </div>
+               
+                           <div className="md:col-span-2">
+                             <TextField defaultValue={imageUrl} name="imageUrl">
+                               <Label>Image URL</Label>
+                               <Input type="url" placeholder="https://example.com/tutor.jpg" className="rounded-2xl" />
+                               <FieldError />
+                             </TextField>
+                           </div>
+               
+                         
+                         </div>
+               
+                         <Button type="submit" variant="outline" className="rounded-none w-full bg-cyan-500 text-white">
+                           Edit Tutor
+                         </Button>
+                       </form>
+              </Surface>
+            </Modal.Body>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+    </Modal>
+  );
+}

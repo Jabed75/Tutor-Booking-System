@@ -3,21 +3,30 @@ import { Button } from '@heroui/react';
 import Link from 'next/link';
 import BookingCard from '@/components/BookingCard';
 import { headers } from 'next/headers';
+import { auth } from '@/lib/auth';
+import { BiEdit } from 'react-icons/bi';
+import { EditModal } from '@/components/EditModal';
+import { DeleteAlert } from '@/components/DeleteAlert';
 
 export const dynamic = "force-dynamic";
 
 const TutorDetailsPage = async ({ params }) => {
     const { id } = await params;
 
-    const res = await fetch(`http://localhost:5000/tutor/${id}`, { cache: 'no-store' });
-    // 2step proxy
-    headers: {
-        authorization: "logged in"
-    }
+    const { tokon } = await auth.api.getToken({
+        headers: await headers()
+    });
+
+ 
+    const res = await fetch(`http://localhost:5000/tutor/${id}`, { 
+        cache: 'no-store',
+        headers: {
+            authorization: `Bearer ${tokon}`
+        }
+    });
     
     const tutor = await res.json(); 
 
-   
     if (!tutor || tutor.message) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
@@ -46,12 +55,14 @@ const TutorDetailsPage = async ({ params }) => {
     return (
         
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+          <div className='flex items-ceneter gap-3 justify-end mt-5 mb-3'>
+             <EditModal tutor={tutor}/>
+          <DeleteAlert tutor={tutor}/>
+          </div>
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                
                 
                 <div className="lg:col-span-2 bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                     
-                   
                     <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 h-48 sm:h-64 w-full">
                         <div className="absolute inset-0 bg-black/10"></div>
                         <Link href="/tutor" className="absolute top-6 left-6 z-10">
@@ -61,7 +72,6 @@ const TutorDetailsPage = async ({ params }) => {
                         </Link>
                     </div>
 
-                   
                     <div className="relative px-6 sm:px-12 pb-8">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-20 gap-6 border-b border-gray-100 pb-8">
                             <img
@@ -84,7 +94,6 @@ const TutorDetailsPage = async ({ params }) => {
                             </div>
                         </div>
 
-                        
                         <div className="mt-8 space-y-6">
                             <div>
                                 <h3 className="text-lg font-bold text-gray-900 mb-3">Professional Overview</h3>
@@ -118,6 +127,7 @@ const TutorDetailsPage = async ({ params }) => {
                         </div>
                     </div>
                 </div> 
+
                 <div className="lg:col-span-1 lg:sticky lg:top-16">
                     <BookingCard tutor={tutor} />
                 </div>

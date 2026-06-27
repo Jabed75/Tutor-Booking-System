@@ -31,7 +31,7 @@ const BookingCard = ({ tutor }) => {
             subject,
             departureDate: departureDate ? new Date(departureDate.year, departureDate.month - 1, departureDate.day) : null
         };
-
+console.log(bookingData)
         try {
             const res = await fetch('http://localhost:5000/booking', {
                 method: "POST",
@@ -55,7 +55,7 @@ const BookingCard = ({ tutor }) => {
             <h1 className='text-3xl font-bold'>${price || 0}</h1>
             <p className='text-sm text-gray-500 mb-4'>per Student</p>
 
-            <DateField className="w-full mb-4" name="date">
+            <DateField onChange={setDepartureDate} className="w-full mb-4" name="date">
                 <Label>Departure Date</Label>
                 <DateField.Group>
                     <DateField.Input>
