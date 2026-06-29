@@ -39,7 +39,7 @@ const handleSignout = async()=>{
             
             <div>
                 <Image 
-                    src='/assets/wanderlast.png' 
+                    src='/assets/Wanderlast.png' 
                     height={150}
                     width={150}
                     alt="logo"
