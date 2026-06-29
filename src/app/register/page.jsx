@@ -3,6 +3,7 @@ import { Button, Card, Description, FieldError, Form, Input, Label, TextField } 
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from "@/lib/auth-client";
+import { GrGoogle } from 'react-icons/gr';
 
 const SignUpPage = () => {
   const router = useRouter()
@@ -27,7 +28,14 @@ const SignUpPage = () => {
       // toast
       alert("error")
     }
-  };
+     
+     };
+  
+  const handleGoogleSignIn= async() =>{
+    await authClient.signIn.social({
+      provider: 'google'
+    })
+  }
   return (
     <Card className="border mx-auto w-125 py-10 mt-5">
       <h1 className="text-center text-2xl font-bold">Register</h1>
@@ -98,10 +106,13 @@ const SignUpPage = () => {
         </div>
       </Form>
 
+       <p className="text-center">or</p>
+        <Button onClick={handleGoogleSignIn} className={'w-full'}><GrGoogle /> Sign in with Google</Button>
+      
 
     </Card>
-  );
-}
+  )
 
+}
 
 export default SignUpPage;

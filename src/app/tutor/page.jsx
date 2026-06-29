@@ -1,17 +1,27 @@
-import { Button, Link } from '@heroui/react';
-import React from 'react';
+"use client"; 
 
-const Tutorpage = async () => {
-    
-    const res = await fetch('http://localhost:5000/tutor', { cache: 'no-store' });
-    const tutors = await res.json();
+import React, { useState, useEffect } from 'react';
+import { Button } from '@heroui/react';
+
+const Tutorpage = () => {
+    const [tutors, setTutors] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutor`, { cache: 'no-store' })
+            .then((res) => res.json())
+            .then((data) => setTutors(data))
+            .catch((err) => console.error("Data fetch error:", err));
+    }, []);
+
+    const filteredTutors = tutors.filter((tutor) =>
+        tutor.tutorName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 
-           
-                <header className="mb-16 text-center">
+                <header className="mb-12 text-center">
                     <span className="text-sm font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full">
                         Premium Tutors
                     </span>
@@ -23,19 +33,33 @@ const Tutorpage = async () => {
                     </p>
                 </header>
 
-              
+                
+                <div className="max-w-md mx-auto mb-16">
+                    <div className="relative shadow-sm rounded-2xl overflow-hidden border border-gray-200 bg-white">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                            🔍
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search tutor by name..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-11 pr-4 py-3.5 bg-transparent text-gray-900 placeholder-gray-400 focus:outline-none text-sm font-medium"
+                        />
+                    </div>
+                </div>
+
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {tutors.map((tutor) => (
+                    {filteredTutors.map((tutor) => (
                         <div 
                             key={tutor._id} 
                             className="group bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col"
                         >
                             <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 h-28 overflow-hidden">
                                 <div className="absolute inset-0 bg-black opacity-10 group-hover:opacity-0 transition-opacity duration-300"></div>
-                               
                                 <div className="absolute -right-10 -top-10 w-28 h-28 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
                                 
-                              
                                 <img
                                     src={tutor.imageUrl}
                                     alt={tutor.tutorName}
@@ -43,10 +67,8 @@ const Tutorpage = async () => {
                                 />
                             </div>
 
-                           
                             <div className="p-6 pt-12 flex-grow flex flex-col justify-between">
                                 <div>
-                                    
                                     <div className="flex items-start justify-between gap-2 mb-2">
                                         <h2 className="text-xl font-extrabold text-gray-900 group-hover:text-indigo-600 transition-colors duration-200 truncate">
                                             {tutor.tutorName}
@@ -56,12 +78,10 @@ const Tutorpage = async () => {
                                         </span>
                                     </div>
                                     
-                                  
                                     <p className="text-sm text-gray-500 flex items-center gap-1.5 font-medium">
                                         <span className="text-indigo-500">📍</span> {tutor.location}
                                     </p>
 
-                                 
                                     <div className="grid grid-cols-2 gap-3 my-5 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 text-sm">
                                         <div>
                                             <span className="block text-xs text-gray-400 font-semibold uppercase tracking-wider">Experience</span>
@@ -73,7 +93,6 @@ const Tutorpage = async () => {
                                         </div>
                                     </div>
 
-                                   
                                     <div className="space-y-2.5 text-sm border-b border-gray-100 pb-5">
                                         <div className="flex justify-between items-center">
                                             <span className="text-gray-500 font-medium flex items-center gap-2">📅 Days:</span>
@@ -88,7 +107,6 @@ const Tutorpage = async () => {
                                     </div>
                                 </div>
 
-                        
                                 <div className="mt-5 pt-2 flex items-center justify-between">
                                     <div>
                                         <span className="text-xs font-bold text-gray-400 block uppercase tracking-wider">HourlyFee</span>
@@ -98,18 +116,25 @@ const Tutorpage = async () => {
                                         </div>
                                     </div>
                                   
-<Link href={`/tutor/${tutor._id}`} prefetch={false}>
-    <Button 
-        className="px-5 py-3 bg-gray-950 hover:bg-indigo-600 text-white text-sm font-bold rounded-xl shadow-sm transition-all duration-300"
-    >
-        Hire Tutor
-    </Button>
-</Link>
+                                    {/* আগের অরিজিনাল কোডের লিংক ও বাটন স্ট্রাকচার */}
+                                    <a href={`/tutor/${tutor._id}`}>
+                                        <Button 
+                                            className="px-5 py-3 bg-gray-950 hover:bg-indigo-600 text-white text-sm font-bold rounded-xl shadow-sm transition-all duration-300"
+                                        >
+                                            Hire Tutor
+                                        </Button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
+
+                {filteredTutors.length === 0 && (
+                    <div className="text-center text-gray-500 mt-12 text-lg font-medium">
+                        No tutors found with the name "{searchTerm}"
+                    </div>
+                )}
 
             </div>
         </div>

@@ -2,7 +2,8 @@ import { Separator } from "@heroui/react";
 
 const Banner = () => {
   return (
-    <div className="bg-[url('/assets/Banner.png')] text-white  flex justify-between flex-col items-center  gap-5 h-150">
+    // এখানে h-150 পরিবর্তন করে h-120 করা হয়েছে, যা ইমেজটিকে ছোট ও পারফেক্ট করবে
+    <div className="bg-[url('/assets/Banner.png')] bg-cover bg-center bg-no-repeat text-white flex justify-between flex-col items-center gap-5 h-120">
       <div className="p-10 text-center flex justify-center flex-col items-center gap-3.5 flex-1">
         <h1 className="text-7xl text-black">
           Discover Your <br /> Next Adventure
@@ -25,37 +26,14 @@ const Banner = () => {
       </div>
 
       <div className=" bg-white/30 flex justify-between gap-5 w-full items-center">
-        <div className="px-3">
-          <h3 className="text-sm">Location</h3>
-          <p className="text-xs">Address, City or Zip</p>
-        </div>
-
+        
          <Separator variant="tertiary" orientation="vertical" />
 
-        <div>
-          <h3 className="text-sm">Date/Duration</h3>
-          <p className="text-xs">Anytime/3 Days</p>
-        </div>
 
            <Separator variant="tertiary" orientation="vertical" />
 
-        <div>
-          <h3 className="text-sm">Budget</h3>
-          <p className="text-xs">$0-$3000</p>
-        </div>
-
            <Separator variant="tertiary" orientation="vertical" />
 
-        <div>
-          <h3 className="text-sm">People</h3>
-          <p className="text-xs">5-10</p>
-        </div>
-
-
-
-        <div className="bg-cyan-500 py-2 px-4">
-          <h3>Search</h3>
-        </div>
       </div>
     </div>
   );

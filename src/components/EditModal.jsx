@@ -39,7 +39,7 @@ console.log(_id)
     const formData = new FormData(e.currentTarget);
     const updatedData = Object.fromEntries(formData.entries());
     console.log(updatedData)
-     const res = await fetch(`http://localhost:5000/tutor/${_id}`, {
+     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutor/${_id}`, {
         method: "PATCH",
         headers: {
           "content-type": "application/json",

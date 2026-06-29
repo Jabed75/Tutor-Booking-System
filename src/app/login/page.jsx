@@ -3,6 +3,7 @@ import { Button, Card, Description, FieldError, Form, Input, Label, TextField } 
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from "@/lib/auth-client";
+import { GrGoogle } from 'react-icons/gr';
 
 const LoginPage = () => {
   const router = useRouter()
@@ -26,6 +27,8 @@ const LoginPage = () => {
 // toast
     alert("error")
      }
+     
+  
   };
   return (
      <Card className="border mx-auto w-125 py-10 mt-5">
@@ -87,7 +90,6 @@ const LoginPage = () => {
         </div>
       </Form>
       
-     
     </Card>
   );
 }
